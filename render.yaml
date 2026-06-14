@@ -1,61 +1,29 @@
-version: "1"
-
-# Render Blueprint — deploys backend API + managed Postgres.
-# Frontend is deployed separately on Vercel (see README).
-#
-# One-time manual steps after first deploy:
-#   1. Set MFA_ENCRYPTION_KEY to a 64-char hex string:
-#        python -c "import os; print(os.urandom(32).hex())"
-#   2. Set CORS_ORIGINS to your Vercel frontend URL, e.g.:
-#        https://vaultify.vercel.app
-#   3. Verify the release command ran migrations:
-#        Render dashboard → Events → release phase logs
-
 services:
   - type: web
     name: vaultify-api
     runtime: docker
     dockerfilePath: ./zero-knowledge-vault/backend/Dockerfile
     dockerContext: ./zero-knowledge-vault/backend
-    dockerCommand: uvicorn main:app --host 0.0.0.0 --port 8000 --workers 2
+    startCommand: "sh -c 'alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8000 --workers 2'"
     plan: free
-
-    # Migrations run before new instances receive traffic.
-    releaseCommand: alembic upgrade head
-
     healthCheckPath: /
-
     envVars:
       - key: DATABASE_URL
         fromDatabase:
           name: vaultify-db
           property: connectionString
-
-      # JWT_SECRET_KEY: Render auto-generates a random value on first deploy.
-      # It stays stable across deploys (Render never regenerates it).
       - key: JWT_SECRET_KEY
         generateValue: true
-
-      # MFA_ENCRYPTION_KEY must be exactly 64 hex chars.
-      # Render's generateValue produces a base64 string, not hex.
-      # Set this manually in the Render dashboard after first deploy.
       - key: MFA_ENCRYPTION_KEY
         sync: false
-
       - key: ENVIRONMENT
         value: production
-
       - key: COOKIE_SECURE
         value: "true"
-
-      # Set to your Vercel frontend URL after deploying frontend.
-      # Example: https://vaultify.vercel.app
       - key: CORS_ORIGINS
         sync: false
-
       - key: REDIS_URL
         sync: false
-
       - key: ADMIN_API_KEY
         generateValue: true
 
