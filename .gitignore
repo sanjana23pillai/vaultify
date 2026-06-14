@@ -1,0 +1,37 @@
+# ── Python ────────────────────────────────────────────────────────────────────
+zero-knowledge-vault/backend/venv/
+zero-knowledge-vault/backend/__pycache__/
+zero-knowledge-vault/backend/**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+zero-knowledge-vault/backend/.coverage
+zero-knowledge-vault/backend/htmlcov/
+zero-knowledge-vault/backend/.pytest_cache/
+zero-knowledge-vault/backend/*.db
+zero-knowledge-vault/backend/*.sqlite3
+
+# ── Node / Next.js ───────────────────────────────────────────────────────────
+zero-knowledge-vault/node_modules/
+zero-knowledge-vault/.next/
+zero-knowledge-vault/out/
+zero-knowledge-vault/*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+
+# ── Environment files — NEVER commit real secrets ─────────────────────────────
+**/.env
+**/.env.local
+**/.env.*.local
+
+# ── Docker ────────────────────────────────────────────────────────────────────
+.docker/
+
+# ── OS / IDE ──────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/settings.json
+.idea/
+
+# ── Vercel ────────────────────────────────────────────────────────────────────
+.vercel/
