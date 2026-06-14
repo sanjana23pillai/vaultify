@@ -4,7 +4,6 @@ services:
     runtime: docker
     dockerfilePath: ./zero-knowledge-vault/backend/Dockerfile
     dockerContext: ./zero-knowledge-vault/backend
-    startCommand: "sh -c 'alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8000 --workers 2'"
     plan: free
     healthCheckPath: /
     envVars:
